@@ -38,6 +38,34 @@ def bullscows(word, answer):
     # print(dict_word, dict_answ)
     return (bulls, cows)
 
+# gameplay(ask: callable, inform: callable, words: list[str]) -> int — функция-приложение, обеспечивающая геймплей:
+# Задумывает случайное слово из списка слов words: list[str]
+
+# Спрашивает у пользователя слово с помощью функции ask("Введите слово: ", words)
+
+# Выводит пользователю результат с помощью функции inform("Быки: {}, Коровы: {}", b, c)
+
+# Если слово не отгадано, переходит к п. 1
+# Если слово отгадано, возвращает количество попыток — вызовов ask()
+
+# Свойства функции ask():
+# ask(prompt: str, valid: list[str] = None) -> str
+# Если необязательный параметр valid не пуст, допустим только ввод слова из valid, иначе спрашивает повторно
+
+def ask(prompt: str, valid: list[str] = None):
+    stroka = input(prompt)
+    if not valid:
+        return stroka
+    while not stroka in valid:
+        stroka = input(prompt)
+
+# Функция inform():
+# inform(format_string: str, bulls: int, cows: int) -> None
+
+def inform(format_string: str, bulls: int, cows: int):
+    print(format_string.format(bulls, cows))
+
+
 
 print(bullscows("ропот", "полип"))
 
