@@ -1,6 +1,7 @@
 import random
 import sys
 import urllib.request
+import cowsay
 
 
 def bullscows(word, answer):
