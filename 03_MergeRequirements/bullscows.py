@@ -79,8 +79,8 @@ def ask(prompt: str, valid: list[str] = None):
 # inform(format_string: str, bulls: int, cows: int) -> None
 
 def inform(format_string: str, bulls: int, cows: int):
-    print(format_string.format(bulls, cows))
-
+    text = (format_string.format(bulls, cows))
+    cowsay.cow(text)
 
 if len(sys.argv) == 2:
     len_word = 5
@@ -94,10 +94,10 @@ elif len(sys.argv) == 3:
         d = open(d).read().split('\n')
     d_end = []
     for i in d:
-        if len(i) == len_word:
+        if len(i) == int(len_word):
             d_end.append(i)
 
-    if not d_end:
+    if len(d_end) == 0:
         print("Нет слов. Дайте другой словарь")
     else:
-        print("Слово отгадано! Вам потребовалось: {gameplay(ask, inform, d)} попыток.")
+        print(f"Слово отгадано! Вам потребовалось: {gameplay(ask, inform, d)} попыток.")
