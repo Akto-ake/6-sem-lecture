@@ -1,4 +1,6 @@
 import random
+import sys
+import urllib.request
 
 
 def bullscows(word, answer):
@@ -15,7 +17,6 @@ def bullscows(word, answer):
     i = 0
 
     while i < (len(answer)):
-        # print(word, answer, word[i])
         if word[i] == answer[i]:
             bulls += 1
             i += 1
@@ -37,20 +38,19 @@ def bullscows(word, answer):
         if k_ans == 'NO':
             continue
         cows += min(k_w, k_ans)
-        
-    # print(dict_word, dict_answ)
     return (bulls, cows)
 
 # gameplay(ask: callable, inform: callable, words: list[str]) -> int — функция-приложение, обеспечивающая геймплей:
 # Задумывает случайное слово из списка слов words: list[str]
 def gameplay(ask: callable, inform: callable, words: list[str]):
     answer = random.choice(words)
+    print("answer:", answer)
     count_ask = 0
 
     while True:
         word = ask("Введите слово: ", words)
         count_ask += 1
-        b, c = bullscows(answer, word)
+        b, c = bullscows(word, answer)
         inform("Быки: {}, Коровы: {}", b, c)
         if b == len(answer):
             return count_ask
@@ -81,7 +81,22 @@ def inform(format_string: str, bulls: int, cows: int):
     print(format_string.format(bulls, cows))
 
 
+if len(sys.argv) == 2:
+    len_word = 5
+elif len(sys.argv) == 3:
+    len_word = sys.argv[2]
 
-print(bullscows("ропот", "полип"))
+    d = sys.argv[1]
+    if d.startswith(('http://', 'https://')):
+        d = urllib.request.urlopen(d).read().decode().split('\n')
+    else:
+        d = open(d).read().split('\n')
+    d_end = []
+    for i in d:
+        if len(i) == len_word:
+            d_end.append(i)
 
-        
+    if not d_end:
+        print("Нет слов. Дайте другой словарь")
+    else:
+        print("Слово отгадано! Вам потребовалось: {gameplay(ask, inform, d)} попыток.")
