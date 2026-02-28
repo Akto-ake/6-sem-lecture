@@ -68,19 +68,20 @@ def gameplay(ask: callable, inform: callable, words: list[str]):
 # Если необязательный параметр valid не пуст, допустим только ввод слова из valid, иначе спрашивает повторно
 
 def ask(prompt: str, valid: list[str] = None):
-    stroka = input(prompt)
+    cowsay.ghostbusters(prompt)
+    stroka = input()
     if not valid:
         return stroka
     while not stroka in valid:
-        stroka = input(prompt)
+        cowsay.ghostbusters(prompt)
+        stroka = input()
     return stroka
 
 # Функция inform():
 # inform(format_string: str, bulls: int, cows: int) -> None
 
 def inform(format_string: str, bulls: int, cows: int):
-    text = (format_string.format(bulls, cows))
-    cowsay.cow(text)
+    cowsay.cow((format_string.format(bulls, cows)))
 
 if len(sys.argv) == 2:
     len_word = 5
