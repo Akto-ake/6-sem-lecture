@@ -1,3 +1,6 @@
+import random
+
+
 def bullscows(word, answer):
     bulls = 0
     cows = 0
@@ -40,6 +43,17 @@ def bullscows(word, answer):
 
 # gameplay(ask: callable, inform: callable, words: list[str]) -> int — функция-приложение, обеспечивающая геймплей:
 # Задумывает случайное слово из списка слов words: list[str]
+def gameplay(ask: callable, inform: callable, words: list[str]):
+    answer = random.choice(words)
+    count_ask = 0
+
+    while True:
+        word = ask("Введите слово: ", words)
+        count_ask += 1
+        b, c = bullscows(answer, word)
+        inform("Быки: {}, Коровы: {}", b, c)
+        if b == len(answer):
+            return count_ask
 
 # Спрашивает у пользователя слово с помощью функции ask("Введите слово: ", words)
 
@@ -58,6 +72,7 @@ def ask(prompt: str, valid: list[str] = None):
         return stroka
     while not stroka in valid:
         stroka = input(prompt)
+    return stroka
 
 # Функция inform():
 # inform(format_string: str, bulls: int, cows: int) -> None
