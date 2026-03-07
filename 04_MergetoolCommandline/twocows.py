@@ -21,8 +21,12 @@ def res(first, second):
 
     return '\n'.join([f'{a:<{m_1}} {b:<{m_2}}' for a, b in zip(first, second)])
 
-class CowCmd(cmd.Cmd):
-    """сommand line for cows :)"""
+class CowCmd(cmd.Cmd):    
+    """
+    сommand line for cows :)
+    acceptable parameters: '-e', '--eyes', '-T', '--tongue', '-W', '--width', '-c', '--character'
+    
+    """
     prompt = ">"
 
     def do_list_cows(self, args):
@@ -34,7 +38,56 @@ class CowCmd(cmd.Cmd):
         print(cowsay.make_bubble(args))
 
     def do_cowsay(self, args):
-        pass
+        """
+        Rendering cows. You need to set parameters for the cow: character, words, eyes, language for first cow.
+        And then "reply" and params for second cow.
+
+        """
+
+        args = shlex.split(args)
+
+        reply_idx = args.index('reply')
+        first = args[:reply_idx]
+        second = args[reply_idx + 1:]
+
+        name = 'cow'
+        eyes = cowsay.Option.eyes
+        tongue = cowsay.Option.tongue
+        width = cowsay.Option.width
+        message = ''
+
+        for i in range(len(first)):
+            if (first[i] == '-e' ) or (first[i] == '--eyes'):
+                eyes = first[i+1]
+            elif (first[i] == '-T' ) or (first[i] == '--tongue'):
+                tongue = first[i+1]
+            elif (first[i] == '-c' ) or (first[i] == '--character'):
+                name = first[i+1]
+            elif (first[i] == '-w' ) or (first[i] == '--width'):
+                width = first[i+1]
+            else:
+                message = first[i]
+        first = cowsay.cowsay(message, cow=name, eyes=eyes, tongue=tongue, width=width)
+        
+        name = 'cow'
+        eyes = cowsay.Option.eyes
+        tongue = cowsay.Option.tongue
+        width = cowsay.Option.width
+        message = ''
+
+        for i in range(len(second)):
+            if (second[i] == '-e' ) or (second[i] == '--eyes'):
+                eyes = second[i+1]
+            elif (second[i] == '-T' ) or (second[i] == '--tongue'):
+                tongue = second[i+1]
+            elif (second[i] == '-c' ) or (second[i] == '--character'):
+                name = second[i+1]
+            elif (second[i] == '-w' ) or (second[i] == '--width'):
+                width = second[i+1]
+            else:
+                message = second[i]
+        second = cowsay.cowsay(message, cow=name, eyes=eyes, tongue=tongue, width=width)
+        print(res(first, second))
 
     def do_cowthink(self, args):
         pass
