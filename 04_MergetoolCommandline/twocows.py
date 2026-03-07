@@ -45,6 +45,9 @@ class CowCmd(cmd.Cmd):
         Rendering cows. You need to set parameters for the cow: character, words, eyes, language for first cow.
         And then "reply" and params for second cow.
 
+        acceptable parameters: '-e', '--eyes', '-T', '--tongue', '-W', '--width', '-c', '--character'
+        and also: 'eyes=', 'tongue=', 'character=', 'width='
+
         """
 
         args = shlex.split(args)
@@ -77,7 +80,7 @@ class CowCmd(cmd.Cmd):
                 width = int(first[i + 1])
             elif (word.startswith('width=')):
                 width = word[6:]
-            elif message == '': 
+            elif message == '':
                 message = word
         first = cowsay.cowsay(
             message,
@@ -110,7 +113,7 @@ class CowCmd(cmd.Cmd):
                 width = int(second[i + 1])
             elif (word.startswith('width=')):
                 width = word[6:]
-            elif message == '': 
+            elif message == '':
                 message = word
         second = cowsay.cowsay(
             message,
@@ -121,6 +124,14 @@ class CowCmd(cmd.Cmd):
         print(res(first, second))
 
     def do_cowthink(self, args):
+        """
+        Rendering cows for cowthink. You need to set parameters for the cow: character, words, eyes, language for first cow.
+        And then "reply" and params for second cow.
+
+        acceptable parameters: '-e', '--eyes', '-T', '--tongue', '-W', '--width', '-c', '--character'
+        and also: 'eyes=', 'tongue=', 'character=', 'width='
+
+        """
         args = shlex.split(args)
 
         reply_idx = args.index('reply')
@@ -151,7 +162,7 @@ class CowCmd(cmd.Cmd):
                 width = int(first[i + 1])
             elif (word.startswith('width=')):
                 width = word[6:]
-            elif message == '': 
+            elif message == '':
                 message = word
         first = cowsay.cowthink(
             message,
@@ -184,7 +195,7 @@ class CowCmd(cmd.Cmd):
                 width = int(second[i + 1])
             elif (word.startswith('width=')):
                 width = word[6:]
-            elif message == '': 
+            elif message == '':
                 message = word
         second = cowsay.cowthink(
             message,
@@ -195,6 +206,7 @@ class CowCmd(cmd.Cmd):
         print(res(first, second))
 
     def do_EOF(self, args):
+        """end of file. or you want more inform?"""
         return 1
 
 
