@@ -27,6 +27,7 @@ class CowCmd(cmd.Cmd):
     """
     сommand line for cows :)
     acceptable parameters: '-e', '--eyes', '-T', '--tongue', '-W', '--width', '-c', '--character'
+    and also: 'eyes=', 'tongue=', 'character=', 'width='
 
     """
     prompt = ">"
@@ -55,20 +56,29 @@ class CowCmd(cmd.Cmd):
         name = 'default'
         eyes = cowsay.Option.eyes
         tongue = cowsay.Option.tongue
-        width = cowsay.Option.width
+        width = 40
         message = ''
 
         for i in range(len(first)):
-            if (first[i] == '-e') or (first[i] == '--eyes'):
+            word = first[i]
+            if (word == '-e') or (word == '--eyes'):
                 eyes = first[i + 1]
-            elif (first[i] == '-T') or (first[i] == '--tongue'):
+            elif (word.startswith('eyes=')):
+                eyes = word[5:]
+            elif (word == '-T') or (word == '--tongue'):
                 tongue = first[i + 1]
-            elif (first[i] == '-c') or (first[i] == '--character'):
+            elif (word.startswith('tongue=')):
+                tongue = word[7:]
+            elif (word == '-c') or (word == '--character'):
                 name = first[i + 1]
-            elif (first[i] == '-w') or (first[i] == '--width'):
+            elif (word.startswith('character=')):
+                name = word[10:]
+            elif (word == '-w') or (word == '--width'):
                 width = int(first[i + 1])
-            else:
-                message = first[i]
+            elif (word.startswith('width=')):
+                width = word[6:]
+            elif message == '': 
+                message = word
         first = cowsay.cowsay(
             message,
             cow=name,
@@ -79,20 +89,29 @@ class CowCmd(cmd.Cmd):
         name = 'default'
         eyes = cowsay.Option.eyes
         tongue = cowsay.Option.tongue
-        width = cowsay.Option.width
+        width = 40
         message = ''
 
         for i in range(len(second)):
-            if (second[i] == '-e') or (second[i] == '--eyes'):
+            word = second[i]
+            if (word == '-e') or (word == '--eyes'):
                 eyes = second[i + 1]
-            elif (second[i] == '-T') or (second[i] == '--tongue'):
+            elif (word.startswith('eyes=')):
+                eyes = word[5:]
+            elif (word == '-T') or (word == '--tongue'):
                 tongue = second[i + 1]
-            elif (second[i] == '-c') or (second[i] == '--character'):
+            elif (word.startswith('tongue=')):
+                tongue = word[7:]
+            elif (word == '-c') or (word == '--character'):
                 name = second[i + 1]
-            elif (second[i] == '-w') or (second[i] == '--width'):
+            elif (word.startswith('character=')):
+                name = word[10:]
+            elif (word == '-w') or (word == '--width'):
                 width = int(second[i + 1])
-            else:
-                message = second[i]
+            elif (word.startswith('width=')):
+                width = word[6:]
+            elif message == '': 
+                message = word
         second = cowsay.cowsay(
             message,
             cow=name,
@@ -108,23 +127,32 @@ class CowCmd(cmd.Cmd):
         first = args[:reply_idx]
         second = args[reply_idx + 1:]
 
-        name = 'cow'
+        name = 'default'
         eyes = cowsay.Option.eyes
         tongue = cowsay.Option.tongue
-        width = cowsay.Option.width
+        width = 40
         message = ''
 
         for i in range(len(first)):
-            if (first[i] == '-e') or (first[i] == '--eyes'):
+            word = first[i]
+            if (word == '-e') or (word == '--eyes'):
                 eyes = first[i + 1]
-            elif (first[i] == '-T') or (first[i] == '--tongue'):
+            elif (word.startswith('eyes=')):
+                eyes = word[5:]
+            elif (word == '-T') or (word == '--tongue'):
                 tongue = first[i + 1]
-            elif (first[i] == '-c') or (first[i] == '--character'):
+            elif (word.startswith('tongue=')):
+                tongue = word[7:]
+            elif (word == '-c') or (word == '--character'):
                 name = first[i + 1]
-            elif (first[i] == '-w') or (first[i] == '--width'):
-                width = first[i + 1]
-            else:
-                message = first[i]
+            elif (word.startswith('character=')):
+                name = word[10:]
+            elif (word == '-w') or (word == '--width'):
+                width = int(first[i + 1])
+            elif (word.startswith('width=')):
+                width = word[6:]
+            elif message == '': 
+                message = word
         first = cowsay.cowthink(
             message,
             cow=name,
@@ -132,23 +160,32 @@ class CowCmd(cmd.Cmd):
             tongue=tongue,
             width=width)
 
-        name = 'cow'
+        name = 'default'
         eyes = cowsay.Option.eyes
         tongue = cowsay.Option.tongue
-        width = cowsay.Option.width
+        width = 40
         message = ''
 
         for i in range(len(second)):
-            if (second[i] == '-e') or (second[i] == '--eyes'):
+            word = second[i]
+            if (word == '-e') or (word == '--eyes'):
                 eyes = second[i + 1]
-            elif (second[i] == '-T') or (second[i] == '--tongue'):
+            elif (word.startswith('eyes=')):
+                eyes = word[5:]
+            elif (word == '-T') or (word == '--tongue'):
                 tongue = second[i + 1]
-            elif (second[i] == '-c') or (second[i] == '--character'):
+            elif (word.startswith('tongue=')):
+                tongue = word[7:]
+            elif (word == '-c') or (word == '--character'):
                 name = second[i + 1]
-            elif (second[i] == '-w') or (second[i] == '--width'):
-                width = second[i + 1]
-            else:
-                message = second[i]
+            elif (word.startswith('character=')):
+                name = word[10:]
+            elif (word == '-w') or (word == '--width'):
+                width = int(second[i + 1])
+            elif (word.startswith('width=')):
+                width = word[6:]
+            elif message == '': 
+                message = word
         second = cowsay.cowthink(
             message,
             cow=name,
