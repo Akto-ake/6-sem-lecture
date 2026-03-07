@@ -90,7 +90,50 @@ class CowCmd(cmd.Cmd):
         print(res(first, second))
 
     def do_cowthink(self, args):
-        pass
+        args = shlex.split(args)
+
+        reply_idx = args.index('reply')
+        first = args[:reply_idx]
+        second = args[reply_idx + 1:]
+
+        name = 'cow'
+        eyes = cowsay.Option.eyes
+        tongue = cowsay.Option.tongue
+        width = cowsay.Option.width
+        message = ''
+
+        for i in range(len(first)):
+            if (first[i] == '-e' ) or (first[i] == '--eyes'):
+                eyes = first[i+1]
+            elif (first[i] == '-T' ) or (first[i] == '--tongue'):
+                tongue = first[i+1]
+            elif (first[i] == '-c' ) or (first[i] == '--character'):
+                name = first[i+1]
+            elif (first[i] == '-w' ) or (first[i] == '--width'):
+                width = first[i+1]
+            else:
+                message = first[i]
+        first = cowsay.cowthink(message, cow=name, eyes=eyes, tongue=tongue, width=width)
+        
+        name = 'cow'
+        eyes = cowsay.Option.eyes
+        tongue = cowsay.Option.tongue
+        width = cowsay.Option.width
+        message = ''
+
+        for i in range(len(second)):
+            if (second[i] == '-e' ) or (second[i] == '--eyes'):
+                eyes = second[i+1]
+            elif (second[i] == '-T' ) or (second[i] == '--tongue'):
+                tongue = second[i+1]
+            elif (second[i] == '-c' ) or (second[i] == '--character'):
+                name = second[i+1]
+            elif (second[i] == '-w' ) or (second[i] == '--width'):
+                width = second[i+1]
+            else:
+                message = second[i]
+        second = cowsay.cowthink(message, cow=name, eyes=eyes, tongue=tongue, width=width)
+        print(res(first, second))
 
     def do_EOF(self, args):
         return 1
