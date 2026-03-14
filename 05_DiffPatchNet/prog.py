@@ -5,10 +5,12 @@ import shlex
 
 clients = {}
 
+
 class Client:
     def __init__(self):
         self.name = None
-        self.queue = asyncio.Queue() 
+        self.queue = asyncio.Queue()
+
 
 async def chat(reader, writer):
     me = Client()
@@ -24,24 +26,26 @@ async def chat(reader, writer):
             if q is send:
                 send = asyncio.create_task(reader.readline())
                 arg = shlex.split(q.result().decode())
-                
+
                 if (arg[0] == "login") and len(arg) == 2:
-                    # login название_коровы — зарегистрироваться под именем название_коровы
+                    # login название_коровы — зарегистрироваться под именем
+                    # название_коровы
                     name_cow = arg[1]
                     if name_cow in clients:
-                        writer.write(f"Error. This name is already taken.\n".encode())
+                        writer.write(
+                            f"Error. This name is already taken.\n".encode())
                         await writer.drain()
                         break
-                        
+
                     if name_cow not in cowsay.list_cows():
                         writer.write(f"Error. Unknown cow.\n".encode())
                         await writer.drain()
                         break
-                    
+
                     clients[me].name = name_cow
                     writer.write(f"You have registered.\n".encode())
                     await writer.drain()
-                
+
                 elif arg[0] == 'who' and len(arg) == 1:
                     who_list = []
                     # who — просмотр зарегистрированных пользователей
@@ -50,20 +54,22 @@ async def chat(reader, writer):
                             who_list.append(clients[i].name)
                     writer.write(f'{"\n".join(who_list)}\n'.encode())
                     await writer.drain()
-                
+
                 elif arg[0] == 'cows' and len(arg) == 1:
-                    cow_list = [i for i in cowsay.list_cows() if i not in clients.keys()]
+                    cow_list = [
+                        i for i in cowsay.list_cows() if i not in clients.keys()]
                     # cows — просмотр свободных имён коров
-                    writer.write(f'{"\n".join(cow_list)}\n'.encode())  
+                    writer.write(f'{"\n".join(cow_list)}\n'.encode())
                     await writer.drain()
-                    
+
                 elif arg[0] == 'quit' and len(arg) == 1:
                     # quit — отключиться
                     flag_quit = True
                     break
-                    
+
                 elif arg[0] == 'say' and len(arg) >= 3:
-                    # say название_коровы текст сообщения — послать сообщение пользователю название_коровы
+                    # say название_коровы текст сообщения — послать сообщение
+                    # пользователю название_коровы
                     name_c = arg[1]
                     message = " ".join(arg[2:])
 
@@ -75,10 +81,11 @@ async def chat(reader, writer):
                     await clients[name_c].queue.put(cowsay.cowsay(message, cow=me.name))
                     writer.write("Message sent.\n".encode())
                     await writer.drain()
-                
+
                 elif arg[0] == 'yield' and len(arg) >= 2:
-                    # yield текст сообщения — послать сообщение всем зарегистрированным пользователям
-    
+                    # yield текст сообщения — послать сообщение всем
+                    # зарегистрированным пользователям
+
                     message = " ".join(arg[1:])
                     for name, client in clients.items():
                         if name != me.name:
@@ -86,7 +93,7 @@ async def chat(reader, writer):
                 else:
                     writer.write("Error. Unknown command.\n".encode())
                     await writer.drain()
-                    
+
             elif q is receive:
                 receive = asyncio.create_task(me.queue.get())
                 writer.write(f"{q.result()}\n".encode())
@@ -99,6 +106,7 @@ async def chat(reader, writer):
     del clients[me]
     writer.close()
     await writer.wait_closed()
+
 
 async def main():
     server = await asyncio.start_server(chat, '0.0.0.0', 1337)
