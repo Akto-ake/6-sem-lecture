@@ -11,7 +11,7 @@ class Client:
         self.queue = asyncio.Queue() 
 
 async def chat(reader, writer):
-    
+    flag_quit = False
     me = "{}:{}".format(*writer.get_extra_info('peername'))
     print(me)
     clients[me] = Client()
@@ -46,6 +46,10 @@ async def chat(reader, writer):
                     # cows — просмотр свободных имён коров
                     writer.write(f'{"\n".join(cow_list)}\n'.encode())  
                     
+                elif arg[0] == 'quit' and len(arg) == 1:
+                    # quit — отключиться
+                    flag_quit = True
+                    
                 for out in clients.values():
                     if out is not clients[me]:
                         await out.put(f"{me} {q.result().decode().strip()}")
@@ -53,6 +57,8 @@ async def chat(reader, writer):
                 receive = asyncio.create_task(clients[me].queue.get())
                 writer.write(f"{q.result()}\n".encode())
                 await writer.drain()
+        if flag_quit:
+            break
     send.cancel()
     receive.cancel()
     print(me, "DONE")
