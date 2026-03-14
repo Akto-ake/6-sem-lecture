@@ -32,6 +32,19 @@ async def chat(reader, writer):
                         break
                     clients[me].name = name_cow
                     writer.write(f"You have registered.\n".encode())
+                
+                elif arg[0] == 'who' and len(arg) == 1:
+                    who_list = []
+                    # who — просмотр зарегистрированных пользователей
+                    for i in clients:
+                        if clients[i].name:
+                            who_list.append(clients[i].name)
+                    writer.write(f'{"\n".join(who_list)}\n'.encode())
+                
+                elif arg[0] == 'cows' and len(arg) == 1:
+                    cow_list = [i for i in cowsay.list_cows() if i not in clients.keys()]
+                    # cows — просмотр свободных имён коров
+                    writer.write(f'{"\n".join(cow_list)}\n'.encode())  
                     
                 for out in clients.values():
                     if out is not clients[me]:
